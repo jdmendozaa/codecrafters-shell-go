@@ -11,7 +11,7 @@ import (
 
 type Shell struct {
 	Path           []string
-	BuiltinCommand *builtin.BuiltinCommands
+	BuiltinCommand *builtin.Commands
 }
 
 func (shell *Shell) Run() {
