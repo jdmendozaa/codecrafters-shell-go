@@ -7,12 +7,12 @@ import (
 
 type ExitCommand struct{}
 
-func (c *ExitCommand) Execute(args []string) (string, error) {
+func (c *ExitCommand) Execute(args []string) error {
 	statusCode := args[0]
 	statusCodeInt, err := strconv.Atoi(statusCode)
 	if err != nil {
-		return "", err
+		return err
 	}
 	os.Exit(statusCodeInt)
-	return "", nil
+	return nil
 }
