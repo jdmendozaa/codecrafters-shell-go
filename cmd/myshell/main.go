@@ -15,7 +15,7 @@ func main() {
 		// Wait for user input
 		command, err := bufio.NewReader(os.Stdin).ReadString('\n')
 		handleError(err)
-		ExecuteCommand(command)
+		ExecuteBuiltinCommand(command)
 	}
 }
 

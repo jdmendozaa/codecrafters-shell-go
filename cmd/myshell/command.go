@@ -6,32 +6,36 @@ import (
 	"strings"
 )
 
-type Command interface {
+// Declare here all builtin commands
+var builtinCommands = map[string]BuiltinCommand{
+	"exit": &ExitCommand{},
+	"echo": &EchoCommand{},
+	"type": &TypeCommand{},
+}
+
+type BuiltinCommand interface {
 	Execute(args []string) error
 }
 
-func ExecuteCommand(fullCommand string) {
+func ExecuteBuiltinCommand(fullCommand string) {
 	commandSplit := strings.Fields(fullCommand)
 	if len(commandSplit) == 0 {
 		return
 	}
 	command := commandSplit[0]
 	args := commandSplit[1:]
-	var c Command
+	var c BuiltinCommand
 
-	switch command {
-	case "exit":
-		c = &ExitCommand{}
-	case "echo":
-		c = &EchoCommand{}
-	default:
-		fmt.Fprintf(os.Stderr, "%v: command not found\n", command)
+	if builtinCommand, ok := builtinCommands[command]; ok {
+		c = builtinCommand
+	} else {
+		fmt.Fprintf(os.Stderr, "%s: command not found\n", command)
 	}
 
 	if c != nil {
 		err := c.Execute(args)
 		if err != nil {
-			fmt.Fprint(os.Stderr, err.Error())
+			fmt.Fprintln(os.Stderr, err.Error())
 		}
 	}
 }
