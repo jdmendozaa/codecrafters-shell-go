@@ -79,10 +79,6 @@ func (shell *Shell) SearchInPath(command string) (string, error) {
 }
 
 func (shell *Shell) RunExternalProgram(ctx context.Context, commandPath string, args []string) {
-	output, err := exec.CommandContext(ctx, commandPath, args...).CombinedOutput()
+	output, _ := exec.CommandContext(ctx, commandPath, args...).CombinedOutput()
 	fmt.Fprint(os.Stdout, string(output))
-
-	if err != nil {
-		fmt.Fprint(os.Stderr, err.Error())
-	}
 }
