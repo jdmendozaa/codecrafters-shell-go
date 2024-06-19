@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strings"
 )
 
 func main() {
@@ -16,8 +15,7 @@ func main() {
 		// Wait for user input
 		command, err := bufio.NewReader(os.Stdin).ReadString('\n')
 		handleError(err)
-		command = strings.TrimSpace(command)
-		fmt.Printf("%v: command not found\n", command)
+		ExecuteCommand(command)
 	}
 }
 
