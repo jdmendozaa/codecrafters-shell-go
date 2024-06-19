@@ -2,9 +2,11 @@ package main
 
 import (
 	"bufio"
+	"context"
 	"fmt"
 	"github.com/codecrafters-io/shell-starter-go/cmd/myshell/builtin"
 	"os"
+	"os/exec"
 	"path"
 	"strings"
 )
@@ -50,7 +52,7 @@ func (shell *Shell) Run() {
 			fmt.Fprintln(os.Stderr, err.Error())
 			continue
 		}
-		fmt.Fprintf(os.Stdout, "%s\n", commandPath)
+		shell.RunExternalProgram(context.Background(), commandPath, args)
 	}
 }
 
@@ -74,4 +76,13 @@ func (shell *Shell) SearchInPath(command string) (string, error) {
 		}
 	}
 	return "", CommandNotFoundError{command}
+}
+
+func (shell *Shell) RunExternalProgram(ctx context.Context, commandPath string, args []string) {
+	output, err := exec.CommandContext(ctx, commandPath, args...).CombinedOutput()
+	fmt.Fprint(os.Stdout, string(output))
+
+	if err != nil {
+		fmt.Fprint(os.Stderr, err.Error())
+	}
 }
