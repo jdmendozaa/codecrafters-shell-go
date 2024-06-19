@@ -7,7 +7,7 @@ import (
 )
 
 type Command interface {
-	Execute(args []string) error
+	Execute(args []string) (string, error)
 }
 
 func ExecuteCommand(fullCommand string) {
@@ -23,7 +23,7 @@ func ExecuteCommand(fullCommand string) {
 		fmt.Fprintf(os.Stderr, "%v: command not found\n", command)
 	}
 	if c != nil {
-		err := c.Execute(args)
+		_, err := c.Execute(args)
 		if err != nil {
 			fmt.Fprint(os.Stderr, err.Error())
 		}
