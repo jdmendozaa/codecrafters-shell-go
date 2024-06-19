@@ -1,4 +1,4 @@
-package main
+package builtin
 
 import (
 	"os"
@@ -7,7 +7,7 @@ import (
 
 type ExitCommand struct{}
 
-func (c *ExitCommand) Execute(args []string) error {
+func (c *ExitCommand) Execute(args ...string) error {
 	if len(args) == 0 {
 		os.Exit(0)
 	}

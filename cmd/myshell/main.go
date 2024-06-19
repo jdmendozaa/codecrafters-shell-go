@@ -1,22 +1,22 @@
 package main
 
 import (
-	"bufio"
-	"fmt"
+	"github.com/codecrafters-io/shell-starter-go/cmd/myshell/builtin"
 	"log"
 	"os"
+	"strings"
 )
 
 func main() {
+	pathEnv := os.Getenv("PATH")
+	shellPath := strings.Split(pathEnv, ":")
+	BuiltinCommands := builtin.NewBuiltinCommands(shellPath)
 
-	for {
-		_, err := fmt.Fprint(os.Stdout, "$ ")
-		handleError(err)
-		// Wait for user input
-		command, err := bufio.NewReader(os.Stdin).ReadString('\n')
-		handleError(err)
-		ExecuteBuiltinCommand(command)
+	shell := &Shell{
+		Path:           shellPath,
+		BuiltinCommand: BuiltinCommands,
 	}
+	shell.Run()
 }
 
 func handleError(err error) {
