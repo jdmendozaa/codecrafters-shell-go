@@ -9,14 +9,20 @@ import (
 )
 
 func main() {
-	// Uncomment this block to pass the first stage
-	fmt.Fprint(os.Stdout, "$ ")
 
-	// Wait for user input
-	command, err := bufio.NewReader(os.Stdin).ReadString('\n')
+	for {
+		_, err := fmt.Fprint(os.Stdout, "$ ")
+		handleError(err)
+		// Wait for user input
+		command, err := bufio.NewReader(os.Stdin).ReadString('\n')
+		handleError(err)
+		command = strings.TrimSpace(command)
+		fmt.Printf("%v: command not found\n", command)
+	}
+}
+
+func handleError(err error) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	command = strings.TrimSpace(command)
-	fmt.Printf("%v: command not found\n", command)
 }
